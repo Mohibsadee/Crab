@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>crab</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script>
+
+
+        // Set up the scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+        const canvas = document.querySelector(".webgl");
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x0, 0);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.update();
+        
+
+
+
+
+        const texture = new THREE.TextureLoader().load("textures/land.jpeg");
+
+        // Set the texture to repeat and wrap
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(4, 4);
+
+        // Set the background of the scene to the texture
+        scene.background = texture;
+
+
+
+
+
+
+
+
+        // Add light
+       
+        const light = new THREE.HemisphereLight(0xffffff, 0x000000, 1);
+        scene.add(light);
+        light.position.set(80, 8, 4);
+
+        //hemiLight.castShadow = true;
+       // hemiLight.shadowIntensity = 0.5;
+
+        
+
+
+
+
+
+        // const light = new THREE.DirectionalLight(color, intensity, distance);
+        // scene.add(light);
+
+        // const geometry = new THREE.BoxGeometry(2, 1, 1);
+        // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        // const cube = new THREE.Mesh(geometry, material);
+        // scene.add(cube);
+
+        // const cygeometry = new THREE.CylinderGeometry(1, 1, 1, 32);
+        // const cymaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        // const cylinder = new THREE.Mesh(cygeometry, cymaterial);
+        // scene.add(cylinder);
+
+        const landgeometry = new THREE.BoxGeometry( 20,10,.5 );
+        const landTexture = new THREE.TextureLoader().load("textures/land.jpeg");
+        landTexture.wrapS = THREE.RepeatWrapping;
+        landTexture.wrapT = THREE.RepeatWrapping;
+        landTexture.repeat.set(1, 1);
+        landTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const landMaterial = new THREE.MeshStandardMaterial({
+            map: landTexture,
+        });
+        const plane = new THREE.Mesh( landgeometry, landMaterial );
+
+        scene.add( plane );
+        plane.position.x = 5;
+        plane.position.y = -1.2;
+        plane.rotation.x = Math.PI/2;
+    /// crab/////////////////
+
+        const crabGeometry = new THREE.CylinderGeometry(3, 1.5, 1, 64);
+        const bodyTexture = new THREE.TextureLoader().load("textures/moon-crab_p2.jpeg");
+        bodyTexture.wrapS = THREE.RepeatWrapping;
+        bodyTexture.wrapT = THREE.RepeatWrapping;
+        bodyTexture.repeat.set(1, 1);
+        bodyTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const crabMaterial = new THREE.MeshStandardMaterial({
+            map: bodyTexture,
+        });
+        const crabMesh = new THREE.Mesh(crabGeometry, crabMaterial);
+
+
+
+
+
+        const legGeometry = new THREE.ConeGeometry(.25, 1.5, 5);
+
+        const legTexture = new THREE.TextureLoader().load("textures/leg_texture.png");
+        legTexture.wrapS = THREE.RepeatWrapping;
+        legTexture.wrapT = THREE.RepeatWrapping;
+        legTexture.repeat.set(1, 1);
+        legTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const legMaterial = new THREE.MeshStandardMaterial({
+            map: legTexture,
+        });
+
+
+
+        //1.5, 0.01, 1;
+
+
+
+        const leg1 = new THREE.Mesh(legGeometry, legMaterial);
+        leg1.position.set(2.0, -0.5, 1);
+        leg1.rotation.x = Math.PI / 1;
+        leg1.rotation.z = -Math.PI / 6;
+        leg1.rotation.y = Math.PI / 6;
+
+
+        const leg2 = new THREE.Mesh(legGeometry, legMaterial);
+        leg2.position.set(-2.0, -0.5, 1);
+        leg2.rotation.x = Math.PI / 1;
+        leg2.rotation.z = Math.PI / 6;
+        leg2.rotation.y = Math.PI / 6;
+
+
+        const leg3 = new THREE.Mesh(legGeometry, legMaterial);
+        leg3.position.set(2.0, -0.5, -1.55);
+        leg3.rotation.x = -Math.PI / 1;
+        leg3.rotation.z = -Math.PI / 6;
+        leg3.rotation.y = -Math.PI / 6;
+
+
+
+        const leg4 = new THREE.Mesh(legGeometry, legMaterial);
+        leg4.position.set(2.0, -0.6, -0.1);
+        leg4.rotation.x = -Math.PI / 1;
+        leg4.rotation.z = -Math.PI / 6;
+        leg4.rotation.y = -Math.PI / 6;
+
+
+        const leg5 = new THREE.Mesh(legGeometry, legMaterial);
+        leg5.position.set(-2.0, -0.6, -0.1);
+        leg5.rotation.x = Math.PI / 1;
+        leg5.rotation.z = Math.PI / 6;
+        leg5.rotation.y = Math.PI / 6;
+
+        const leg6 = new THREE.Mesh(legGeometry, legMaterial);
+        leg6.position.set(-2.0, -0.6, -1);
+        leg6.rotation.x = Math.PI / 1;
+        leg6.rotation.z = Math.PI / 6;
+        leg6.rotation.y = Math.PI / 6;
+
+
+
+
+        // // Define the crab's claws
+        // const claw1 = new THREE.BoxGeometry(10, 10, 30);
+        // claw1.translate(-10, 25, 15);
+        // claw1.rotateY(THREE.Math.degToRad(45));
+        // crabGeometry.merge(claw1);
+
+        // const claw2 = new THREE.BoxGeometry(10, 10, 30);
+        // claw2.translate(-10, 25, -15);
+        // claw2.rotateY(THREE.Math.degToRad(-45));
+        // crabGeometry.merge(claw2);
+
+
+
+        // Add the legs to the crab mesh
+        crabMesh.add(leg1);
+        crabMesh.add(leg2);
+        crabMesh.add(leg3);
+        crabMesh.add(leg4);
+        crabMesh.add(leg5);
+        crabMesh.add(leg6);
+
+
+
+
+        // Create the crab eye mesh
+        const eyeGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.25, 32);
+        const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x0 });
+        const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+
+        // Position the eyes on the crab body
+        leftEye.position.set(0.5, 0.25, 2.5);
+        rightEye.position.set(-0.5, 0.25, 2.5);
+
+        // Add the eyes to the crab body mesh
+        crabMesh.add(leftEye);
+        crabMesh.add(rightEye);
+
+
+
+
+
+
+        // Create the crab claw meshes
+        const clawGeometry = new THREE.BoxGeometry(1, 0.5, 0.5);
+        //const clawMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const clawTexture = new THREE.TextureLoader().load("textures/moon-crab-claw.jpeg");
+        clawTexture.wrapS = THREE.RepeatWrapping;
+        clawTexture.wrapT = THREE.RepeatWrapping;
+        clawTexture.repeat.set(1, 1);
+        clawTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const clawMaterial = new THREE.MeshStandardMaterial({
+            map: clawTexture,
+        });
+
+        const EdgeclawTexture = new THREE.TextureLoader().load("textures/wclaw.jpg");
+        const clawEdgeMaterial = new THREE.MeshStandardMaterial({
+            map: EdgeclawTexture,
+        });
+
+        const leftClaw = new THREE.Mesh(clawGeometry, clawMaterial);
+        const rightClaw = new THREE.Mesh(clawGeometry, clawMaterial);
+        const rightClawedge = new THREE.Mesh(clawGeometry, clawEdgeMaterial);
+
+        // Position the claws on the crab body
+        leftClaw.position.set(1.5, -0.05, 1.8);
+        rightClaw.position.set(-1.5, -0.06, 1.8);
+
+        rightClawedge.position.set(0.5, -0.5,2);
+        rightClawedge.scale.set(1.5,1.2,0.5);
+
+        crabMesh.add(rightClawedge);
+
+        // Rotate the claws to create a natural crab claw position
+        leftClaw.rotation.z = 0.7;
+        rightClaw.rotation.z = Math.PI / 1.5;
+
+        // Add the claws to the crab body mesh
+        crabMesh.add(leftClaw);
+        crabMesh.add(rightClaw);
+
+       
+        scene.add(crabMesh);
+
+
+
+
+
+
+
+        //////////////////green crab
+
+
+        const gcrabGeometry = new THREE.CylinderGeometry(3, 1.5, 1, 32);
+        const gbodyTexture = new THREE.TextureLoader().load("textures/gcrab.jpg");
+        gbodyTexture.wrapS = THREE.RepeatWrapping;
+        gbodyTexture.wrapT = THREE.RepeatWrapping;
+        gbodyTexture.repeat.set(1, 1);
+        gbodyTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const gcrabMaterial = new THREE.MeshStandardMaterial({
+            map: gbodyTexture,
+        });
+        const gcrabMesh = new THREE.Mesh(gcrabGeometry, gcrabMaterial);
+        gcrabMesh.position.set(10, 0, 0);
+
+
+
+
+
+
+
+
+
+        //////////////////green legs
+
+        const glegGeometry = new THREE.ConeGeometry(.25, 1.5, 5);
+
+        const glegTexture = new THREE.TextureLoader().load("textures/claw.jpg");
+        glegTexture.wrapS = THREE.RepeatWrapping;
+        glegTexture.wrapT = THREE.RepeatWrapping;
+        glegTexture.repeat.set(1, 1);
+        glegTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const glegMaterial = new THREE.MeshStandardMaterial({
+            map: glegTexture,
+        });
+
+
+
+        //1.5, 0.01, 1;
+
+
+
+        const gleg1 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg1.position.set(2.0, -0.5, 1);
+        gleg1.rotation.x = Math.PI / 1;
+        gleg1.rotation.z = -Math.PI / 6;
+        gleg1.rotation.y = Math.PI / 6;
+
+
+        const gleg2 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg2.position.set(-2.0, -0.5, 1);
+        gleg2.rotation.x = Math.PI / 1;
+        gleg2.rotation.z = Math.PI / 6;
+        gleg2.rotation.y = Math.PI / 6;
+
+
+        const gleg3 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg3.position.set(2.0, -0.5, -1.55);
+        gleg3.rotation.x = -Math.PI / 1;
+        gleg3.rotation.z = -Math.PI / 6;
+        gleg3.rotation.y = -Math.PI / 6;
+
+
+
+        const gleg4 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg4.position.set(2.0, -0.6, -0.1);
+        gleg4.rotation.x = -Math.PI / 1;
+        gleg4.rotation.z = -Math.PI / 6;
+        gleg4.rotation.y = -Math.PI / 6;
+
+
+        const gleg5 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg5.position.set(-2.0, -0.6, -0.1);
+        gleg5.rotation.x = Math.PI / 1;
+        gleg5.rotation.z = Math.PI / 6;
+        gleg5.rotation.y = Math.PI / 6;
+
+        const gleg6 = new THREE.Mesh(glegGeometry, glegMaterial);
+        gleg6.position.set(-2.0, -0.6, -1);
+        gleg6.rotation.x = Math.PI / 1;
+        gleg6.rotation.z = Math.PI / 6;
+        gleg6.rotation.y = Math.PI / 6;
+
+
+        // Add the legs to the crab mesh
+        gcrabMesh.add(gleg1);
+        gcrabMesh.add(gleg2);
+        gcrabMesh.add(gleg3);
+        gcrabMesh.add(gleg4);
+        gcrabMesh.add(gleg5);
+        gcrabMesh.add(gleg6);
+
+        scene.add(gcrabMesh);
+
+
+
+
+
+        ////green eyes
+
+
+
+        
+        // Create the crab eye mesh
+        const geyeGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.25, 32);
+        const geyeMaterial = new THREE.MeshStandardMaterial({ color: 0x0 });
+        const gleftEye = new THREE.Mesh(geyeGeometry, geyeMaterial);
+        const grightEye = new THREE.Mesh(geyeGeometry, geyeMaterial);
+
+        // Position the eyes on the crab body
+        gleftEye.position.set(0.5, 0.25, 2.5);
+        grightEye.position.set(-0.5, 0.25, 2.5);
+    
+
+        // Add the eyes to the crab body mesh
+        gcrabMesh.add(gleftEye);
+        gcrabMesh.add(grightEye);
+
+
+
+
+
+
+        // Create the crab claw meshes
+        const gclawGeometry = new THREE.BoxGeometry(1, 0.5, 0.5);
+        //const clawMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const gclawTexture = new THREE.TextureLoader().load("textures/claw.jpg");
+        gclawTexture.wrapS = THREE.RepeatWrapping;
+        gclawTexture.wrapT = THREE.RepeatWrapping;
+        gclawTexture.repeat.set(1, 1);
+        gclawTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        const gclawMaterial = new THREE.MeshStandardMaterial({
+            map: clawTexture,
+        });
+        const gleftClaw = new THREE.Mesh(gclawGeometry, gclawMaterial);
+        const grightClaw = new THREE.Mesh(gclawGeometry, gclawMaterial);
+        const grightClawedge = new THREE.Mesh(clawGeometry, clawEdgeMaterial);
+        // Position the claws on the crab body
+        gleftClaw.rotation.z = 0.7;
+        grightClaw.rotation.z = Math.PI / 1.7;
+        const gEdgeclawTexture = new THREE.TextureLoader().load("textures/wclaw.jpg");
+        const gclawEdgeMaterial = new THREE.MeshStandardMaterial({
+            map: gEdgeclawTexture,
+        });
+
+
+        gleftClaw.position.set(1.5, -0.05, 1.8);
+        grightClaw.position.set(-1.5, -0.06, 1.8);
+        
+        grightClawedge.position.set(0.5, -0.5,2);
+        grightClawedge.scale.set(1.5,1.2,0.5);
+
+
+        // Rotate the claws to create a natural crab claw position
+       
+
+        // Add the claws to the crab body mesh
+        gcrabMesh.add(gleftClaw);
+        gcrabMesh.add(grightClaw);
+        gcrabMesh.add(grightClawedge);
+
+        scene.add(gcrabMesh);
+
+
+
+
+
+
+
+        let scale = 1;
+        const minScale = 0.0;
+        const maxScale = 1;
+
+        // Define the direction of the scale change
+        let direction = -1;
+
+        camera.position.x = Math.sin(0.01) * 20;
+        camera.position.y = 10;
+        camera.position.z = Math.cos(0.01) * 20;
+        camera.lookAt(0, 5, 0);
+        scene.add(camera);
+
+        //let mesh;
+        let clock = new THREE.Clock();
+        let rotationSpeed = 10;
+        let rotationRange = Math.PI / 18; // Rotate the mesh in a 30-degree range
+
+        let counter = 0;
+        let shouldIncrement = true;
+
+
+
+
+    const animate = function () {
+        requestAnimationFrame(animate);
+
+
+            // Calculate rotation angle based on clock time
+            const time = clock.getElapsedTime();
+            const rotationAngle = Math.sin(time * rotationSpeed) * rotationRange;
+            const grotationAngle = Math.sin(time * 1) * rotationRange;
+
+
+            scale += direction * 0.01;
+            leftEye.scale.set(0.5, scale, scale);//0.5, 0.7, 2.6
+            rightEye.scale.set(0.5, scale, scale);//0.5, 0.7, 2.6
+            gleftEye.scale.set(0.5, scale, scale);//0.5, 0.7, 2.6
+            grightEye.scale.set(0.5, scale, scale);//0.5, 0.7, 2.6
+
+            // If the scale reaches the minimum or maximum, change the direction of the scale change
+            if (scale <= minScale || scale >= maxScale) {
+                direction *= -1;
+                //DelayNode(10000);
+            }
+            
+            if(shouldIncrement===true){
+                crabMesh.position.x += 0.01;
+                counter++;
+            }
+
+           
+            if (counter >= 200) {
+                rotationSpeed = 1 ;
+                shouldIncrement = false;
+            }
+
+            //crabMesh.rotation.y += 0.01;
+            //crabMesh.rotation.x += 0.01;
+            //cube.rotation.x += 0.01;
+            //cube.rotation.y += 0.01;
+
+         
+
+            // Rotate the mesh around the Y axis
+            leg1.rotation.z = rotationAngle;
+            leg2.rotation.z = rotationAngle;
+            leg3.rotation.z = -rotationAngle;
+            leg4.rotation.z = rotationAngle * 2;
+            leg5.rotation.z = -rotationAngle * 2;
+            leg6.rotation.z = rotationAngle;
+
+
+            gleg1.rotation.z = grotationAngle;
+            gleg2.rotation.z = grotationAngle;
+            gleg3.rotation.z = -grotationAngle;
+            gleg4.rotation.z = grotationAngle * 2;
+            gleg5.rotation.z = -grotationAngle * 2;
+            gleg6.rotation.z = grotationAngle;
+
+            renderer.render(scene, camera);
+    };
+    animate();
+    </script>
+</body>
+
+</html>
